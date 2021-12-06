@@ -1,11 +1,14 @@
 #include <SDL.h>
+#include <SDL_image.h>
 #include <cassert>
 #include <iostream>
 #include <cstdlib>
 
+#include <Windows.h>
+
 #include "App.h"
 
-//App::window= SDL_CreateWindow("Penids", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 700, SDL_WINDOW_SHOWN);
+
 
 void App::initSDL()
 {
@@ -21,17 +24,18 @@ void App::initSDL()
 
 	if (!window)
 	{
-		assert("Failed to open %d x %d window: %s\n", screenWidth, screenHeight, SDL_GetError());
+		assert("Error 26 app");
 	}
 
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
 	if (!renderer)
 	{
-		assert("Failed to create renderer: %s\n", SDL_GetError());
+		assert("error 33 app");
 	}
 
 }
+
 
 void App::prepareScene()
 {
