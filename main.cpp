@@ -9,7 +9,14 @@ int main(int argc, char* argv[])
 {
     App test;
 
-    test.mainFunction();
+    test.init("Top down shooter", false);
+
+    while (test.runningStatus())
+    {
+        test.runApp();
+    }
+    
+    test.clean();
     
     return 0;
 }

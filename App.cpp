@@ -1,88 +1,80 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include <cassert>
-#include <iostream>
-#include <cstdlib>
-
-#include <Windows.h>
-
 #include "App.h"
 
-
-
-void App::initSDL()
+void App::init(const char* title, bool fullscreen)
 {
-	int rendererFlags{ SDL_RENDERER_ACCELERATED };
-	int windowFlags{ 0 };
+	int flags = 0;
 
-	SDL_Init(SDL_INIT_EVERYTHING);
-
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (fullscreen)
 	{
-		assert("Couldn't initalize SDL!");
+		flags = SDL_WINDOW_FULLSCREEN;
 	}
-
-	if (!window)
+	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
-		assert("Error 26 app");
-	}
+		window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_screenWidth, m_screenHeight, SDL_WINDOW_SHOWN);
+		renderer = SDL_CreateRenderer(window, -1, 0);
+		if (renderer)
+		{
+			SDL_SetRenderDrawColor(renderer, 3, 156, 90, 55);
+		}
 
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-
-	if (!renderer)
-	{
-		assert("error 33 app");
+		isRunning = true;
 	}
+	
+	SDL_Surface* tempSurface = IMG_Load("assets/redditor.png");
+	playerTexture = SDL_CreateTextureFromSurface(renderer, tempSurface);
 
 }
 
-
-void App::prepareScene()
+void App::runApp()
 {
-	SDL_SetRenderDrawColor(renderer, 3, 156, 90, 55);
+	handleEvent();
+	update();
+	render();
+}
 
+
+void App::update()
+{
+	destR.h = 512;
+	destR.w = 512;
+	destR.x = 428;
+	destR.y = 120;
+}
+
+void App::render()
+{
 	SDL_RenderClear(renderer);
-}
-
-void App::presentScene()
-{
+	SDL_RenderCopy(renderer, playerTexture, nullptr, &destR);
 	SDL_RenderPresent(renderer);
 }
 
-void App::doInput()
+void App::clean()
+{
+	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
+	SDL_Quit();
+}
+
+void App::handleEvent()
 {
 	SDL_Event event;
 
-	while (SDL_PollEvent(&event))
+	SDL_PollEvent(&event);
+
+	switch (event.type)
 	{
-		switch (event.type)
-		{
-		case SDL_QUIT:
-			exit(1);
-			break;
-
-		default:
-			break;
-		}
+	case SDL_QUIT:
+		isRunning = false;
+		break;
+	default:
+		break;
 	}
 }
 
-void App::loop()
+App::App()
 {
-	while (true) 
-	{ 
-		prepareScene();
-
-		doInput();
-
-		presentScene();
-		
-		SDL_Delay(16); 
-	}
 }
 
-void App::mainFunction()
+App::~App()
 {
-	initSDL();
-	loop();
 }

@@ -1,28 +1,41 @@
 #pragma once
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <iostream>
+
 class App
 {
 private:
 	const int m_screenWidth{1280};
 	const int m_screenHeight{720};
 
+	bool isRunning{ false };
 
-	SDL_Window* window = SDL_CreateWindow("Top down shooter", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		m_screenWidth, m_screenHeight, SDL_WINDOW_SHOWN);
+	SDL_Texture* playerTexture;
+	SDL_Rect srcR, destR;
 
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
+	SDL_Surface* tempSurface = IMG_Load("assets/redditor.png");
 
-	void initSDL();
+	SDL_Window* window;
 
-	void prepareScene();
-	void presentScene();
+	SDL_Renderer* renderer;
 
-	void doInput();
 
-	void loop();
+	void update();
+	void render();
+	void handleEvent();
 
 public:
-	void mainFunction();
+	bool runningStatus() { return isRunning; }
 	
+	void init(const char* title, bool fullscreen);
+	
+	App();
+	~App();
 
+	void runApp();
+
+	void clean();
 };
 
