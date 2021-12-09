@@ -11,6 +11,7 @@ int main(int argc, char* argv[])
 
     test.init("Top down shooter", false);
 
+    
     while (test.runningStatus())
     {
         test.runApp();
