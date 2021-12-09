@@ -27,9 +27,18 @@ void App::init(const char* title, bool fullscreen)
 
 void App::runApp()
 {
+	frameStart = SDL_GetTicks();
+
 	handleEvent();
 	update();
 	render();
+
+	frameTime = SDL_GetTicks() - frameStart;
+
+	if (frameDelay > frameTime)
+	{
+		SDL_Delay(frameDelay - frameTime);
+	}
 }
 
 
