@@ -1,5 +1,11 @@
 #include "App.h"
 
+#include "TextureManager.h"
+#include "GameObject.h"
+
+GameObject* player;
+GameObject* enemy;
+
 void App::init(const char* title, bool fullscreen)
 {
 	int flags = 0;
@@ -19,10 +25,9 @@ void App::init(const char* title, bool fullscreen)
 
 		isRunning = true;
 	}
-	
-	SDL_Surface* tempSurface = IMG_Load("assets/redditor.png");
-	playerTexture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-
+	//
+	player = new GameObject("assets/redditor.png", renderer, 0, 0);
+	enemy = new GameObject("assets/dumbshit.png", renderer, 150, 60);
 }
 
 void App::runApp()
@@ -44,16 +49,16 @@ void App::runApp()
 
 void App::update()
 {
-	destR.h = 512;
-	destR.w = 512;
-	destR.x = 428;
-	destR.y = 120;
+	player->update();
+	enemy->update();
 }
 
 void App::render()
 {
 	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, playerTexture, nullptr, &destR);
+	player->render();
+	enemy->render();
+
 	SDL_RenderPresent(renderer);
 }
 

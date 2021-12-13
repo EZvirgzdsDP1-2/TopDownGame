@@ -18,8 +18,6 @@ private:
 
 	bool isRunning{ false };
 
-	SDL_Texture* playerTexture;
-	SDL_Rect srcR, destR;
 
 	SDL_Surface* tempSurface = IMG_Load("assets/redditor.png");
 
