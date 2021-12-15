@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "GameObject.h"
 #include "TextureManager.h"
 
@@ -14,10 +16,71 @@ GameObject::~GameObject()
 {
 }
 
+void GameObject::characterMovement()
+{
+    const Uint8* state = SDL_GetKeyboardState(nullptr);
+
+    if (state[SDL_SCANCODE_W])
+    {
+        if (ypos >= 0 and ypos - 4 > 0)
+        {
+            ypos -= 4;
+        }
+        else
+        {
+            ypos == 0;
+        }
+
+    }
+    if (state[SDL_SCANCODE_S])
+    {
+        if (ypos <= 656 and ypos + 4 < 656)
+        {
+            ypos += 4;
+        }
+        else
+        {
+            ypos == 656;
+        }
+    }
+    if (state[SDL_SCANCODE_A])
+    {
+        if (xpos >= 0 and xpos - 4 > 0)
+        {
+            xpos -= 4;
+        }
+        else
+        {
+            xpos == 0;
+        }
+    }
+    if (state[SDL_SCANCODE_D])
+    {
+        if (xpos <= 1216 and xpos + 4 < 1216)
+        {
+            xpos += 4;
+        }
+        else
+        {
+            xpos == 1216;
+        }
+    }
+}
+
+void GameObject::mousePosition()
+{
+    int mouseX{ 0 };
+    int mouseY{ 0 };
+
+    Uint32 buttons = SDL_GetMouseState(&mouseX, &mouseY);
+
+    std::cout << "Mouse coordinates: " << mouseX << " " << mouseY << '\n';
+}
+
 void GameObject::update()
 {
-	xpos++;
-	ypos++;
+    characterMovement();
+    mousePosition();
 
 	srcRect.h = 65;
 	srcRect.w = 65;

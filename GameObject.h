@@ -15,6 +15,9 @@ public:
 	GameObject(const char* texturesheet, SDL_Renderer* ren, int x, int y);
 	~GameObject();
 
+
+	void characterMovement();
+	void mousePosition();
 	void update();
 	void render();
 };

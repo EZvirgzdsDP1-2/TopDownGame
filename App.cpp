@@ -2,13 +2,10 @@
 
 #include "TextureManager.h"
 #include "GameObject.h"
-#include "ECS.h"
-#include "Components.h"
 
 GameObject* player;
-GameObject* enemy;
-Manager manager;
-auto& newPlayer(manager.addEntity());
+//GameObject* enemy;
+
 
 void App::init(const char* title, bool fullscreen)
 {
@@ -29,10 +26,10 @@ void App::init(const char* title, bool fullscreen)
 
 		isRunning = true;
 	}
-	//
+	
 	player = new GameObject("assets/redditor.png", renderer, 0, 0);
-	enemy = new GameObject("assets/dumbshit.png", renderer, 150, 60);
-	newPlayer.addComponent<PoisitionComponent>();
+	//enemy = new GameObject("assets/dumbshit.png", renderer, 150, 60);
+	
 }
 
 void App::runApp()
@@ -55,17 +52,15 @@ void App::runApp()
 void App::update()
 {
 	player->update();
-	enemy->update();
-	manager.update();
-	std::cout << newPlayer.getComponent<PoisitionComponent>().x() << ","
-		<< newPlayer.getComponent<PoisitionComponent>().y() << std::endl;
+	//enemy->update();
+	
 }
 
 void App::render()
 {
 	SDL_RenderClear(renderer);
 	player->render();
-	enemy->render();
+	//enemy->render();
 
 	SDL_RenderPresent(renderer);
 }
