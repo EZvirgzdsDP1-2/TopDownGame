@@ -4,7 +4,7 @@
 #include "GameObject.h"
 
 GameObject* player;
-//GameObject* enemy;
+
 
 
 void App::init(const char* title, bool fullscreen)
@@ -28,7 +28,7 @@ void App::init(const char* title, bool fullscreen)
 	}
 	
 	player = new GameObject("assets/redditor.png", renderer, 0, 0);
-	//enemy = new GameObject("assets/dumbshit.png", renderer, 150, 60);
+	
 	
 }
 
@@ -52,7 +52,7 @@ void App::runApp()
 void App::update()
 {
 	player->update();
-	//enemy->update();
+	
 	
 }
 
@@ -60,7 +60,7 @@ void App::render()
 {
 	SDL_RenderClear(renderer);
 	player->render();
-	//enemy->render();
+	
 
 	SDL_RenderPresent(renderer);
 }
