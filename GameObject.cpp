@@ -1,7 +1,17 @@
 #include <iostream>
+#include <cmath>
 
 #include "GameObject.h"
 #include "TextureManager.h"
+
+SDL_Point center{30, 30};
+int Delta_x{ 0 };
+int Delta_y{ 0 };
+
+int mouseX{ 0 };
+int mouseY{ 0 };
+
+double angle{};
 
 GameObject::GameObject(const char* texturesheet, SDL_Renderer* ren, int x, int y)
 {
@@ -69,12 +79,19 @@ void GameObject::characterMovement()
 
 void GameObject::mousePosition()
 {
-    int mouseX{ 0 };
-    int mouseY{ 0 };
+   
 
-    Uint32 buttons = SDL_GetMouseState(&mouseX, &mouseY);
+    SDL_GetMouseState(&mouseX, &mouseY);
 
-    std::cout << "Mouse coordinates: " << mouseX << " " << mouseY << '\n';
+    Delta_x = xpos - mouseX;
+    Delta_y = ypos - mouseY;
+
+    angle = (atan2(Delta_y, Delta_x) * 180.0000) / 3.14159265;
+    
+    
+    //SDL_RenderCopyEx(renderer, objTexture,nullptr, &destRect, angle, &center, SDL_FLIP_NONE);
+
+    //std::cout << "Mouse coordinates: " << mouseX << " " << mouseY << '\n';
 }
 
 void GameObject::update()
@@ -95,5 +112,8 @@ void GameObject::update()
 
 void GameObject::render()
 {
-	SDL_RenderCopy(renderer, objTexture, &srcRect, &destRect);
+    SDL_RenderCopyEx(renderer, objTexture, &srcRect, &destRect, angle, &center, SDL_FLIP_NONE);
+	
+    SDL_RenderPresent(renderer);
+    //SDL_RenderCopy(renderer, objTexture, &srcRect, &destRect);
 }
