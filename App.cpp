@@ -2,8 +2,8 @@
 
 #include "TextureManager.h"
 #include "GameObject.h"
-
 GameObject* player;
+EnemyGameObject* enemy;
 
 
 
@@ -28,6 +28,7 @@ void App::init(const char* title, bool fullscreen)
 	}
 	
 	player = new GameObject("assets/redditor.png", renderer, 0, 0);
+	enemy = new EnemyGameObject("assets/dumbshit.png", renderer, 1000, 0);
 	
 	
 }
@@ -51,7 +52,9 @@ void App::runApp()
 
 void App::update()
 {
-	player->update();
+
+	player->playerUpdate();
+	enemy->enemyUpdate();
 	
 	
 }
@@ -59,7 +62,8 @@ void App::update()
 void App::render()
 {
 	SDL_RenderClear(renderer);
-	player->render();
+	player->playerRender();
+	enemy->enemyRender();
 	
 
 	SDL_RenderPresent(renderer);
@@ -83,9 +87,8 @@ void App::handleEvent()
 	case SDL_QUIT:
 		isRunning = false;
 		break;
-	default:
-		break;
 	}
+
 }
 
 App::App()

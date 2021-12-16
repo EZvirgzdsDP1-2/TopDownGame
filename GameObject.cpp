@@ -4,75 +4,75 @@
 #include "GameObject.h"
 #include "TextureManager.h"
 
-SDL_Point center{30, 30};
+SDL_Point Pcenter{32, 32};
 int Delta_x{ 0 };
 int Delta_y{ 0 };
 
 int mouseX{ 0 };
 int mouseY{ 0 };
 
-double angle{};
+double Pangle{};
 
 GameObject::GameObject(const char* texturesheet, SDL_Renderer* ren, int x, int y)
 {
 	renderer = ren;
 	objTexture = TextureManager::LoadTexture(texturesheet, ren);
 
-	xpos = x;
-	ypos = y;
+	Pxpos = x;
+	Pypos = y;
 }
 
 GameObject::~GameObject()
 {
 }
 
-void GameObject::characterMovement()
+void GameObject::playerMovement()
 {
     const Uint8* state = SDL_GetKeyboardState(nullptr);
 
     if (state[SDL_SCANCODE_W])
     {
-        if (ypos >= 0 and ypos - 4 > 0)
+        if (Pypos >= 0 and Pypos - 2 > 0)
         {
-            ypos -= 4;
+            Pypos -= 2;
         }
         else
         {
-            ypos == 0;
+            Pypos == 0;
         }
 
     }
     if (state[SDL_SCANCODE_S])
     {
-        if (ypos <= 656 and ypos + 4 < 656)
+        if (Pypos <= 656 and Pypos + 2 < 656)
         {
-            ypos += 4;
+            Pypos += 2;
         }
         else
         {
-            ypos == 656;
+            Pypos == 656;
         }
     }
     if (state[SDL_SCANCODE_A])
     {
-        if (xpos >= 0 and xpos - 4 > 0)
+        if (Pxpos >= 0 and Pxpos - 2 > 0)
         {
-            xpos -= 4;
+            Pxpos -= 2;
         }
         else
         {
-            xpos == 0;
+            Pxpos == 0;
         }
     }
     if (state[SDL_SCANCODE_D])
     {
-        if (xpos <= 1216 and xpos + 4 < 1216)
+        if (Pxpos <= 1216 and Pxpos + 2 < 1216)
         {
-            xpos += 4;
+            Pxpos += 2;
         }
         else
         {
-            xpos == 1216;
+            Pxpos == 1216;
         }
     }
 }
@@ -83,10 +83,10 @@ void GameObject::mousePosition()
 
     SDL_GetMouseState(&mouseX, &mouseY);
 
-    Delta_x = xpos - mouseX;
-    Delta_y = ypos - mouseY;
+    Delta_x = Pxpos - mouseX;
+    Delta_y = Pypos - mouseY;
 
-    angle = (atan2(Delta_y, Delta_x) * 180.0000) / 3.14159265;
+    Pangle = (atan2(Delta_y, Delta_x) * 180.0000) / 3.14159265;
     
     
     //SDL_RenderCopyEx(renderer, objTexture,nullptr, &destRect, angle, &center, SDL_FLIP_NONE);
@@ -94,26 +94,105 @@ void GameObject::mousePosition()
     //std::cout << "Mouse coordinates: " << mouseX << " " << mouseY << '\n';
 }
 
-void GameObject::update()
+void GameObject::playerUpdate()
 {
-    characterMovement();
+    playerMovement();
     mousePosition();
 
-	srcRect.h = 65;
-	srcRect.w = 65;
-	srcRect.x = 0;
-	srcRect.y = 0;
+	PsrcRect.h = 65;
+	PsrcRect.w = 65;
+	PsrcRect.x = 0;
+	PsrcRect.y = 0;
 
-	destRect.x = xpos;
-	destRect.y = ypos;
-	destRect.w = srcRect.w;
-	destRect.h = srcRect.h;
+	PdestRect.x = Pxpos;
+	PdestRect.y = Pypos;
+	PdestRect.w = PsrcRect.w;
+	PdestRect.h = PsrcRect.h;
 }
 
-void GameObject::render()
+void GameObject::playerRender()
 {
-    SDL_RenderCopyEx(renderer, objTexture, &srcRect, &destRect, angle, &center, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, objTexture, &PsrcRect, &PdestRect, Pangle, &Pcenter, SDL_FLIP_NONE);
 	
     SDL_RenderPresent(renderer);
     //SDL_RenderCopy(renderer, objTexture, &srcRect, &destRect);
+}
+
+EnemyGameObject::EnemyGameObject(const char* texturesheet, SDL_Renderer* ren, int x, int y)
+{
+    renderer = ren;
+    objTexture = TextureManager::LoadTexture(texturesheet, ren);
+
+    Expos = x;
+    Eypos = y;
+}
+
+void EnemyGameObject::enemyRender()
+{
+    SDL_RenderCopy(renderer, objTexture, &EsrcRect, &EdestRect);
+}
+
+void EnemyGameObject::enemyUpdate()
+{
+    enemyMovement();
+    EsrcRect.h = 65;
+    EsrcRect.w = 65;
+    EsrcRect.x = 0;
+    EsrcRect.y = 0;
+
+    EdestRect.x = Expos;
+    EdestRect.y = Eypos;
+    EdestRect.w = EsrcRect.w;
+    EdestRect.h = EsrcRect.h;
+}
+
+void EnemyGameObject::enemyMovement()
+{
+    const Uint8* state = SDL_GetKeyboardState(nullptr);
+
+    if (state[SDL_SCANCODE_UP])
+    {
+        if (Eypos >= 0 and Eypos - 2 > 0)
+        {
+            Eypos -= 2;
+        }
+        else
+        {
+            Eypos == 0;
+        }
+
+    }
+    if (state[SDL_SCANCODE_DOWN])
+    {
+        if (Eypos <= 656 and Eypos + 2 < 656)
+        {
+            Eypos += 2;
+        }
+        else
+        {
+            Eypos == 656;
+        }
+    }
+    if (state[SDL_SCANCODE_LEFT])
+    {
+        if (Expos >= 0 and Expos - 2 > 0)
+        {
+            Expos -= 2;
+        }
+        else
+        {
+            Expos == 0;
+        }
+    }
+    if (state[SDL_SCANCODE_RIGHT])
+    {
+        if (Expos <= 1216 and Expos + 2 < 1216)
+        {
+            Expos += 2;
+        }
+        else
+        {
+            Expos == 1216;
+        }
+    }
 }

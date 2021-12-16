@@ -3,14 +3,19 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+#include "GameObject.h"
 
 class App
 {
 private:
+	int Pxpos;
+	int Pypos;
+	int Expos;
+	int Eypos;
 	const int m_screenWidth{1280};
 	const int m_screenHeight{720};
 
-	const int FPS = 60;
+	const int FPS = 120;
 	const int frameDelay = 1000 / FPS;
 
 	Uint32 frameStart;
