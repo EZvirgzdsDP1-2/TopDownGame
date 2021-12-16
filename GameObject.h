@@ -20,5 +20,7 @@ public:
 	void mousePosition();
 	void update();
 	void render();
+
+	void getPlayerLocation(int *x, int *y);
 };
 

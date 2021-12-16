@@ -13,6 +13,9 @@ private:
 	const int FPS = 60;
 	const int frameDelay = 1000 / FPS;
 
+	int playerX{};
+	int playerY{};
+
 	Uint32 frameStart;
 	int frameTime;
 
@@ -41,5 +44,6 @@ public:
 	void runApp();
 
 	void clean();
+
 };
 

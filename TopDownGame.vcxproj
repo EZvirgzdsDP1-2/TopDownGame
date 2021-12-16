@@ -164,12 +164,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="RNG.cpp" />
+    <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="EnemyObject.h" />
     <ClInclude Include="forwardDeclerations.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="TextureManager.h" />

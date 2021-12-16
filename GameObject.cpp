@@ -117,3 +117,9 @@ void GameObject::render()
     SDL_RenderPresent(renderer);
     //SDL_RenderCopy(renderer, objTexture, &srcRect, &destRect);
 }
+
+void GameObject::getPlayerLocation(int *x, int *y)
+{
+    *x = xpos;
+    *y = ypos;
+}

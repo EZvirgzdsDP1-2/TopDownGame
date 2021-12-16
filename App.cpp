@@ -2,9 +2,12 @@
 
 #include "TextureManager.h"
 #include "GameObject.h"
+#include "EnemyObject.h"
+
+#include "forwardDeclerations.h"
 
 GameObject* player;
-
+EnemyObject* enemy;
 
 
 void App::init(const char* title, bool fullscreen)
@@ -28,7 +31,7 @@ void App::init(const char* title, bool fullscreen)
 	}
 	
 	player = new GameObject("assets/redditor.png", renderer, 0, 0);
-	
+	enemy = new EnemyObject("assets/dumbshit.png", renderer, getRandomNumber(100, 1400), getRandomNumber(800,1000));
 	
 }
 
@@ -52,8 +55,10 @@ void App::runApp()
 void App::update()
 {
 	player->update();
+	player->getPlayerLocation(&playerX, &playerY);
 	
-	
+	enemy->passPlayerCoord(&playerX, &playerY);
+	enemy->enemyUpdate();
 }
 
 void App::render()
@@ -61,6 +66,7 @@ void App::render()
 	SDL_RenderClear(renderer);
 	player->render();
 	
+	enemy->enemyRender();
 
 	SDL_RenderPresent(renderer);
 }
@@ -71,6 +77,8 @@ void App::clean()
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 }
+
+
 
 void App::handleEvent()
 {
