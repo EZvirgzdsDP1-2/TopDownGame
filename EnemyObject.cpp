@@ -23,19 +23,26 @@ void EnemyObject::passPlayerCoord(int* x, int* y)
 	m_playerCoordinatesY = *y;
 }
 
+SDL_Rect EnemyObject::getEnemyRect()
+{
+    return m_destRect;
+}
+
+
+
 void EnemyObject::enemyMovement()
 {
     if (m_CoordinatesX < m_playerCoordinatesX) {
-        m_CoordinatesX += 1;
+        m_CoordinatesX += 2;
     }
     if (m_CoordinatesX > m_playerCoordinatesX) {
-        m_CoordinatesX -= 1;
+        m_CoordinatesX -= 2;
     }
     if (m_CoordinatesY > m_playerCoordinatesY) {
-        m_CoordinatesY -= 1;
+        m_CoordinatesY -= 2;
     }
     if (m_CoordinatesY < m_playerCoordinatesY) {
-        m_CoordinatesY += 1;
+        m_CoordinatesY += 2;
     }
     
 
@@ -66,4 +73,9 @@ void EnemyObject::enemyRender()
 	SDL_RenderCopyEx(renderer, objTexture, &m_srcRect, &m_destRect, m_enemyAngle, &m_enemyCenter, SDL_FLIP_NONE);
 
     SDL_RenderPresent(renderer);
+}
+
+void EnemyObject::deleteEnemyTexture()
+{
+    SDL_DestroyTexture(objTexture);
 }

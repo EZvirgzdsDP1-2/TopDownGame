@@ -5,6 +5,9 @@
 class GameObject
 {
 private:
+	int playerHealth{60};
+	int playerDamage{20};
+
 	int xpos;
 	int ypos;
 
@@ -15,6 +18,7 @@ public:
 	GameObject(const char* texturesheet, SDL_Renderer* ren, int x, int y);
 	~GameObject();
 
+	SDL_Rect getPlayerRect();
 
 	void characterMovement();
 	void mousePosition();
@@ -22,5 +26,7 @@ public:
 	void render();
 
 	void getPlayerLocation(int *x, int *y);
+
+	void deletePlayerTexture();
 };
 

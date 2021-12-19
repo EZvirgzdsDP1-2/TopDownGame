@@ -24,7 +24,10 @@ void App::init(const char* title, bool fullscreen)
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
-			SDL_SetRenderDrawColor(renderer, 3, 156, 90, 55);
+			//SDL_SetRenderDrawColor(renderer, 3, 156, 90, 55);
+			
+			backgroundImage = IMG_Load("assets/background.png");
+			backgroundSurface = SDL_CreateTextureFromSurface(renderer, backgroundImage);
 		}
 
 		isRunning = true;
@@ -32,7 +35,6 @@ void App::init(const char* title, bool fullscreen)
 	
 	player = new GameObject("assets/redditor.png", renderer, 0, 0);
 	enemy = new EnemyObject("assets/dumbshit.png", renderer, getRandomNumber(100, 1400), getRandomNumber(800,1000));
-	
 }
 
 void App::runApp()
@@ -54,19 +56,27 @@ void App::runApp()
 
 void App::update()
 {
+	
+	
 	player->update();
 	player->getPlayerLocation(&playerX, &playerY);
 	
 	enemy->passPlayerCoord(&playerX, &playerY);
 	enemy->enemyUpdate();
+
+
+	checkCollision();
 }
 
 void App::render()
 {
 	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer, backgroundSurface, NULL, NULL);
+
 	player->render();
 	
 	enemy->enemyRender();
+	
 
 	SDL_RenderPresent(renderer);
 }
@@ -74,6 +84,7 @@ void App::render()
 void App::clean()
 {
 	SDL_DestroyWindow(window);
+	SDL_FreeSurface(backgroundImage);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 }
@@ -93,6 +104,21 @@ void App::handleEvent()
 		break;
 	default:
 		break;
+	}
+}
+
+void App::checkCollision()
+{
+	SDL_Rect tempEnemyRect = enemy->getEnemyRect();
+	SDL_Rect tempPlayerRect = player->getPlayerRect();
+	
+	
+	SDL_bool collision = SDL_HasIntersection(&tempEnemyRect, &tempPlayerRect);
+
+	if (collision)
+	{
+		player->deletePlayerTexture();
+		enemy->deleteEnemyTexture();
 	}
 }
 

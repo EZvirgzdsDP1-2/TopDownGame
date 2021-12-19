@@ -22,7 +22,10 @@ private:
 	bool isRunning{ false };
 
 
+	SDL_Surface* backgroundImage;
+	SDL_Texture* backgroundSurface;
 	SDL_Surface* tempSurface = IMG_Load("assets/redditor.png");
+
 
 	SDL_Window* window;
 
@@ -32,6 +35,7 @@ private:
 	void update();
 	void render();
 	void handleEvent();
+	void checkCollision();
 
 public:
 	bool runningStatus() { return isRunning; }

@@ -26,6 +26,13 @@ GameObject::~GameObject()
 {
 }
 
+SDL_Rect GameObject::getPlayerRect()
+{
+    return destRect;
+}
+
+
+
 void GameObject::characterMovement()
 {
     const Uint8* state = SDL_GetKeyboardState(nullptr);
@@ -122,4 +129,9 @@ void GameObject::getPlayerLocation(int *x, int *y)
 {
     *x = xpos;
     *y = ypos;
+}
+
+void GameObject::deletePlayerTexture()
+{
+    SDL_DestroyTexture(objTexture);
 }

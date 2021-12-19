@@ -5,6 +5,9 @@
 class EnemyObject
 {
 private:
+	int m_enemyHealth{100};
+	int m_enemyDamage{20};
+
 	int m_CoordinatesX;
 	int m_CoordinatesY;
 
@@ -27,8 +30,12 @@ public:
 
 	void passPlayerCoord(int *x,int *y);
 
+	SDL_Rect getEnemyRect();
+
 	void enemyMovement();
 	void enemyUpdate();
 	void enemyRender();
+	
+	void deleteEnemyTexture();
 };
 
