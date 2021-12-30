@@ -1,3 +1,5 @@
+#include <vector>
+
 #include "App.h"
 
 #include "TextureManager.h"
@@ -8,6 +10,8 @@
 
 GameObject* player;
 EnemyObject* enemy;
+
+std::vector<EnemyObject> enemies;
 
 
 void App::init(const char* title, bool fullscreen)
@@ -34,7 +38,17 @@ void App::init(const char* title, bool fullscreen)
 	}
 	
 	player = new GameObject("assets/redditor.png", renderer, 0, 0);
-	enemy = new EnemyObject("assets/dumbshit.png", renderer, getRandomNumber(100, 1400), getRandomNumber(800,1000));
+	//enemy = new EnemyObject("assets/dumbshit.png", renderer, getRandomNumber(100, 1400), getRandomNumber(800,1000));
+
+	
+	
+	for (int i{ 0 }; i < 10; ++i)
+	{
+		EnemyObject* enemyVector = new EnemyObject("assets/dumbshit.png", renderer, getRandomNumber(100, 1400), getRandomNumber(800, 1000));
+		enemies.push_back(*enemyVector);
+	}
+
+	
 }
 
 void App::runApp()
@@ -61,8 +75,27 @@ void App::update()
 	player->update();
 	player->getPlayerLocation(&playerX, &playerY);
 	
-	enemy->passPlayerCoord(&playerX, &playerY);
-	enemy->enemyUpdate();
+	//enemy->passPlayerCoord(&playerX, &playerY);
+	//enemy->enemyUpdate();
+
+	//std::vector<EnemyObject>::iterator it;
+	//it = enemies.begin(); it != enemies.end(); ++it
+	/*
+	for (int i{0}; i<enemies.size();++i)
+	{
+		enemies.at(i).passPlayerCoord(&playerX, &playerY);
+		
+	}
+	*/
+	for (EnemyObject& iter : enemies)
+	{
+		iter.passPlayerCoord(&playerX, &playerY);
+	}
+
+	for (EnemyObject& iter : enemies)
+	{
+		iter.enemyUpdate();
+	}
 
 
 	checkCollision();
@@ -75,8 +108,12 @@ void App::render()
 
 	player->render();
 	
-	enemy->enemyRender();
+	//enemy->enemyRender();
 	
+	for (EnemyObject& iter : enemies)
+	{
+		iter.enemyRender();
+	}
 
 	SDL_RenderPresent(renderer);
 }
@@ -109,17 +146,44 @@ void App::handleEvent()
 
 void App::checkCollision()
 {
-	SDL_Rect tempEnemyRect = enemy->getEnemyRect();
+	//SDL_Rect tempEnemyRect = enemy->getEnemyRect();
+	std::vector<SDL_Rect> tempEnemyRect;
+
+	for (int i{ 0 }; i < enemies.size(); ++i)
+	{
+		tempEnemyRect.push_back(enemies.at(i).getEnemyRect());
+	}
+
 	SDL_Rect tempPlayerRect = player->getPlayerRect();
 	
 	
-	SDL_bool collision = SDL_HasIntersection(&tempEnemyRect, &tempPlayerRect);
+	SDL_bool collision;
 
-	if (collision)
+	for (int i{0};i<enemies.size();++i)
 	{
-		player->deletePlayerTexture();
-		enemy->deleteEnemyTexture();
+		collision = SDL_HasIntersection(&tempEnemyRect.at(i), &tempPlayerRect);
+
+		if (collision)
+		{
+			player->deletePlayerTexture();
+			//enemy->deleteEnemyTexture();
+			/*
+			for (int i{ 0 }; i < enemies.size(); ++i)
+			{
+				enemies.at(i).deleteEnemyTexture();
+			}
+			*/
+
+			for (EnemyObject& iter1 : enemies)
+			{
+				iter1.deleteEnemyTexture();
+			}
+
+			break;
+		}
 	}
+
+	
 }
 
 App::App()
