@@ -42,7 +42,7 @@ void App::init(const char* title, bool fullscreen)
 
 	
 	
-	for (int i{ 0 }; i < 10; ++i)
+	for (int i{ 0 }; i < 8; ++i)
 	{
 		EnemyObject* enemyVector = new EnemyObject("assets/dumbshit.png", renderer, getRandomNumber(100, 1400), getRandomNumber(800, 1000));
 		enemies.push_back(*enemyVector);
@@ -167,12 +167,7 @@ void App::checkCollision()
 		{
 			player->deletePlayerTexture();
 			//enemy->deleteEnemyTexture();
-			/*
-			for (int i{ 0 }; i < enemies.size(); ++i)
-			{
-				enemies.at(i).deleteEnemyTexture();
-			}
-			*/
+			
 
 			for (EnemyObject& iter1 : enemies)
 			{
